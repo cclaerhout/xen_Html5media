@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<addon addon_id="sedo_html5media" title="BbCode Multimedia - Html5media" version_string="1.0.3" version_id="4" url="http://xenforo.com/community/resources/bbcode-multimedia-html5media.1603" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
+  <admin_navigation/>
+  <admin_permissions/>
+  <admin_style_properties/>
+  <admin_templates/>
+  <code_events/>
+  <code_event_listeners/>
+  <cron/>
+  <email_templates/>
+  <optiongroups>
+    <group group_id="sedo_bbcode_html5media" display_order="9999" debug_only="0"/>
+    <option option_id="sedo_bbcode_av_audio_ext" edit_format="textbox" data_type="string" can_backup="1">
+      <default_value>mp3;ogg</default_value>
+      <edit_format_params></edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="sedo_bbcode_html5media" display_order="100"/>
+    </option>
+    <option option_id="sedo_bbcode_av_default_height" edit_format="spinbox" data_type="positive_integer" can_backup="1">
+      <default_value>210</default_value>
+      <edit_format_params>min=100
+step=25</edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="sedo_bbcode_html5media" display_order="230"/>
+    </option>
+    <option option_id="sedo_bbcode_av_default_width" edit_format="spinbox" data_type="positive_integer" can_backup="1">
+      <default_value>320</default_value>
+      <edit_format_params>min=100
+step=25</edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="sedo_bbcode_html5media" display_order="200"/>
+    </option>
+    <option option_id="sedo_bbcode_av_max_height" edit_format="spinbox" data_type="positive_integer" can_backup="1">
+      <default_value>420</default_value>
+      <edit_format_params>min=100
+step=25</edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="sedo_bbcode_html5media" display_order="250"/>
+    </option>
+    <option option_id="sedo_bbcode_av_max_width" edit_format="spinbox" data_type="positive_integer" can_backup="1">
+      <default_value>640</default_value>
+      <edit_format_params>min=100
+step=25</edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="sedo_bbcode_html5media" display_order="210"/>
+    </option>
+    <option option_id="sedo_bbcode_av_video_ext" edit_format="textbox" data_type="string" can_backup="1">
+      <default_value>mp4;webm;ogv</default_value>
+      <edit_format_params></edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="sedo_bbcode_html5media" display_order="110"/>
+    </option>
+  </optiongroups>
+  <permissions>
+    <permission_groups/>
+    <permissions/>
+    <interface_groups/>
+  </permissions>
+  <phrases>
+    <phrase title="option_group_sedo_bbcode_html5media" version_id="1" version_string="1.0"><![CDATA[BbCode Multimedia]]></phrase>
+    <phrase title="option_group_sedo_bbcode_html5media_description" version_id="1" version_string="1.0"><![CDATA[Options for BbCode for audio & video]]></phrase>
+    <phrase title="option_sedo_bbcode_av_audio_ext" version_id="1" version_string="1.0"><![CDATA[Audio extensions]]></phrase>
+    <phrase title="option_sedo_bbcode_av_audio_ext_explain" version_id="1" version_string="1.0"><![CDATA[Separate each extension using a semi-colon: <b>;</b><br />
+<br />
+P.S: the audio extensions have the priority on video extensions. If you want to change this, just add <b>video</b> in the tag option.]]></phrase>
+    <phrase title="option_sedo_bbcode_av_default_height" version_id="1" version_string="1.0"><![CDATA[Default height (px)]]></phrase>
+    <phrase title="option_sedo_bbcode_av_default_height_explain" version_id="1" version_string="1.0"><![CDATA[]]></phrase>
+    <phrase title="option_sedo_bbcode_av_default_width" version_id="1" version_string="1.0"><![CDATA[Default width (px)]]></phrase>
+    <phrase title="option_sedo_bbcode_av_default_width_explain" version_id="1" version_string="1.0"><![CDATA[]]></phrase>
+    <phrase title="option_sedo_bbcode_av_max_height" version_id="1" version_string="1.0"><![CDATA[Max height (px)]]></phrase>
+    <phrase title="option_sedo_bbcode_av_max_height_explain" version_id="1" version_string="1.0"><![CDATA[]]></phrase>
+    <phrase title="option_sedo_bbcode_av_max_width" version_id="1" version_string="1.0"><![CDATA[Max width (px)]]></phrase>
+    <phrase title="option_sedo_bbcode_av_max_width_explain" version_id="1" version_string="1.0"><![CDATA[]]></phrase>
+    <phrase title="option_sedo_bbcode_av_video_ext" version_id="1" version_string="1.0"><![CDATA[Video extensions]]></phrase>
+    <phrase title="option_sedo_bbcode_av_video_ext_explain" version_id="1" version_string="1.0"><![CDATA[Separate each extension using a semi-colon: <b>;</b>]]></phrase>
+    <phrase title="sedo_html5media_file_not_valid" version_id="1" version_string="1.0"><![CDATA[The file is not valid]]></phrase>
+  </phrases>
+  <route_prefixes/>
+  <style_properties/>
+  <templates>
+    <template title="sedo_bbcode_multimedia" version_id="1" version_string="1.0"><![CDATA[<xen:require css="sedo_bbcode_multimedia.css" />
+<xen:require js="js/sedo/html5media/html5media.min.js" />
+
+<div class="sedo_bb_media {xen:if '{$options.css}', '{$options.css}'}" style="width:{$options.width}px">
+<xen:if is="{$options.isValid}">
+	<xen:if is="{$options.mediaType} == 'audio'">
+		<xen:if is="{$options.hasFallback}">
+			<audio controls preload> 
+				<source src="{xen:raw $content}"></source> 
+				<source src="{xen:raw $options.hasFallback}"></source> 
+			</audio>
+		<xen:else />
+			<audio src="{xen:raw $content}" controls preload></audio>
+		</xen:if>
+	<xen:else />
+		<xen:if is="{$options.hasFallback}">
+				<video width="{$options.width}" height="{$options.height}" {xen:if '{$options.hasPoster}', 'poster="{$options.hasPoster}"'} controls preload> 
+					<source src="{xen:raw $content}"></source> 
+					<source src="{xen:raw $options.hasFallback}"></source> 
+				</video>
+		<xen:else />
+			<video src="{xen:raw $content}" width="{$options.width}" height="{$options.height}" {xen:if '{$options.hasPoster}', 'poster="{$options.hasPoster}"'} controls preload></video>
+		</xen:if>
+	</xen:if>
+	<xen:if is="{$options.hasCaption}">
+		<p class="caption {$options.cssCaption}">{$options.hasCaption}</p>
+	</xen:if>
+<xen:else />
+	<p class="invalid">{xen:phrase sedo_html5media_file_not_valid}</p>
+</xen:if>
+</div>]]></template>
+    <template title="sedo_bbcode_multimedia.css" version_id="1" version_string="1.0"><![CDATA[.sedo_bb_media{
+	display:block;
+	position: relative;
+}
+
+.sedo_bb_media.bleft{
+	margin-left:0;
+	margin-right:auto;
+}
+.sedo_bb_media.bcenter{
+	margin-left:auto;
+	margin-right:auto;
+}
+.sedo_bb_media.bright{
+	margin-left:auto;
+	margin-right:0;
+}
+
+.sedo_bb_media.fleft{
+	float:left;
+	margin:1px 10px 0 0;
+}
+.sedo_bb_media.fright{
+	float:right;
+	margin:1px 0 0 10px;
+}
+
+.sedo_bb_media .caption{
+	font-style:italic;
+}
+.sedo_bb_media .caption.cap_left{
+	text-align:left;
+}
+.sedo_bb_media .caption.cap_center{
+	text-align:center;
+}
+.sedo_bb_media .caption.cap_right{
+	text-align:right;
+}
+
+.sedo_bb_media .invalid{
+	font-style:italic;
+	color:orange;
+}]]></template>
+  </templates>
+  <bb_code_media_sites/>
+  <template_modifications/>
+</addon>
