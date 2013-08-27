@@ -24,6 +24,7 @@ class Sedo_Html5media_BbCode_Formatter_BBcodes
 		$css = '';
 		$css_caption = '';	
 		$type = '';
+		$extension = '';
 		$hasFallback = false;
 		$hasPoster = false;
 		$hasCaption = false;
@@ -118,16 +119,57 @@ class Sedo_Html5media_BbCode_Formatter_BBcodes
 		if($hasFallback)
 		{
 			$wip = explode('|', $content);
-			$media_fallback = ( isset($wip[1]) ) ? self::_miniUrlEncode($wip[1]) : false;
-			$content = ($media_fallback) ? $wip[0] : $content;
 			
-			$fallback_ext = XenForo_Helper_File::getFileExtension($media_fallback);
-			$media_fallback = (in_array($fallback_ext, $all_extensions)) ? $media_fallback : false;
+			$media_fallback = false;
+			
+			if(isset($wip[1]))
+			{
+				//Fallback exists
+				if(preg_match($regex_url, $wip[1]))
+				{
+					//The fallback is an url
+					$media_fallback = self::_miniUrlEncode($wip[1]);
+					$fallback_ext = XenForo_Helper_File::getFileExtension($media_fallback);
+					$media_fallback = (in_array($fallback_ext, $all_extensions)) ? $media_fallback : false;
+					
+				}
+				elseif(preg_match('#\d+#', $wip[1]))
+				{
+					//The fallback is an attachment id
+					$attachmentParams = $parentClass->getAttachmentParams($wip[1], $all_extensions, null);
+
+					if($attachmentParams['canView'] || $attachmentParams['validAttachment'])
+					{
+						$media_fallback = $attachmentParams['url'];
+					}
+					else
+					{
+						$media_fallback = false;
+					}
+				}
+			}
+			
+			$content = ($media_fallback) ? $wip[0] : $content;
 		}
 
 		/*Main detection*/
-		$content = self::_miniUrlEncode($content);
-		$extension = XenForo_Helper_File::getFileExtension($content);
+		if(preg_match($regex_url, $content))
+		{
+			//The main content is an url
+			$content = self::_miniUrlEncode($content);
+			$extension = XenForo_Helper_File::getFileExtension($content);
+		}
+		elseif(preg_match('#\d+#', $content))
+		{
+			//The main content is an attachment id
+			$attachmentParams = $parentClass->getAttachmentParams($content, $all_extensions, null);
+
+			if($attachmentParams['canView'] || $attachmentParams['validAttachment'])
+			{
+				$content = self::_miniUrlEncode($attachmentParams['url']);
+				$extension = $attachmentParams['attachment']['extension'];
+			}
+		}
 
 		if(empty($type) && in_array($extension, $audio_extensions))
 		{
@@ -137,7 +179,6 @@ class Sedo_Html5media_BbCode_Formatter_BBcodes
 		{
 			$type = 'video';		
 		}
-
 
 		/*Poster Detection*/
 		if($hasPoster && $type == 'video')
@@ -149,7 +190,16 @@ class Sedo_Html5media_BbCode_Formatter_BBcodes
 			}
 			else
 			{
-				$hasPoster = XenForo_Link::buildPublicLink('attachments', array('attachment_id' => $hasPoster));
+				$attachmentParams = $parentClass->getAttachmentParams($hasPoster);
+
+				if($attachmentParams['canView'] || $attachmentParams['validAttachment'])
+				{
+					$hasPoster = $attachmentParams['url'];
+				}
+				else
+				{
+					$hasPoster = false;
+				}
 			}
 		}
 		else
