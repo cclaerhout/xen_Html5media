@@ -3,7 +3,7 @@
   <BbCode>
     <General>
       <tag>av</tag>
-      <title><![CDATA[BBM Multimedia - html5media]]></title>
+      <title><![CDATA[[BBM] Multimedia - html5media]]></title>
       <description><![CDATA[Html5 audio/video]]></description>
       <example><![CDATA[[av]http://media.html5media.info/audio.mp3[/av]
 
@@ -26,22 +26,23 @@
         <callback_method>html5media</callback_method>
       </Template>
       <PhpCallback>
-        <class/>
-        <method/>
+        <class></class>
+        <method></method>
       </PhpCallback>
     </Methods>
     <ParserOptions>
       <stopAutoLink>all</stopAutoLink>
       <parseOptions>0</parseOptions>
-      <regex/>
+      <regex></regex>
       <trimLeadingLinesAfter>0</trimLeadingLinesAfter>
       <plainCallback>0</plainCallback>
       <plainChildren>0</plainChildren>
       <stopSmilies>0</stopSmilies>
       <stopLineBreakConversion>0</stopLineBreakConversion>
       <wrapping_tag>none</wrapping_tag>
-      <wrapping_option/>
+      <wrapping_option></wrapping_option>
       <emptyContent_check>0</emptyContent_check>
+      <options_separator>|</options_separator>
     </ParserOptions>
     <ParserPerms>
       <parser_has_usr>0</parser_has_usr>
@@ -56,15 +57,24 @@
       <view_return_delay>0</view_return_delay>
     </ViewPerms>
     <Button>
-      <hasButton>0</hasButton>
+      <hasButton>1</hasButton>
       <button_has_usr>0</button_has_usr>
       <button_usr>a:0:{}</button_usr>
       <killCmd>0</killCmd>
-      <custCmd/>
-      <imgMethod>Direct</imgMethod>
-      <buttonDesc><![CDATA[]]></buttonDesc>
+      <custCmd></custCmd>
+      <quattro_button_type>icons_xen</quattro_button_type>
+      <quattro_button_type_opt><![CDATA[e006]]></quattro_button_type_opt>
+      <quattro_button_return>template</quattro_button_return>
+      <quattro_button_return_opt><![CDATA[multimedia]]></quattro_button_return_opt>
+      <imgMethod></imgMethod>
+      <buttonDesc><![CDATA[{phrase:sedo_h5m_btn_desc}]]></buttonDesc>
       <tagOptions><![CDATA[]]></tagOptions>
       <tagContent><![CDATA[]]></tagContent>
+      <redactor_has_icon>1</redactor_has_icon>
+      <redactor_sprite_mode>1</redactor_sprite_mode>
+      <redactor_sprite_params_x>2</redactor_sprite_params_x>
+      <redactor_sprite_params_y>-2876</redactor_sprite_params_y>
+      <redactor_image_url><![CDATA[styles/default/xenforo/editor/icons.png]]></redactor_image_url>
     </Button>
   </BbCode>
 </bbm_bbcodes>

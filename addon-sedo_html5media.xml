@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="sedo_html5media" title="BbCode Multimedia - Html5media" version_string="1.0.3" version_id="4" url="http://xenforo.com/community/resources/bbcode-multimedia-html5media.1603" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
+<addon addon_id="sedo_html5media" title="[BBM] BbCode Multimedia - Html5media" version_string="1.1.0" version_id="6" url="http://xenforo.com/community/resources/bbcode-multimedia-html5media.1603" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
   <admin_templates/>
+  <admin_template_modifications/>
   <code_events/>
   <code_event_listeners/>
   <cron/>
   <email_templates/>
+  <email_template_modifications/>
   <optiongroups>
     <group group_id="sedo_bbcode_html5media" display_order="9999" debug_only="0"/>
     <option option_id="sedo_bbcode_av_audio_ext" edit_format="textbox" data_type="string" can_backup="1">
@@ -73,43 +75,292 @@ P.S: the audio extensions have the priority on video extensions. If you want to 
     <phrase title="option_sedo_bbcode_av_max_width_explain" version_id="1" version_string="1.0"><![CDATA[]]></phrase>
     <phrase title="option_sedo_bbcode_av_video_ext" version_id="1" version_string="1.0"><![CDATA[Video extensions]]></phrase>
     <phrase title="option_sedo_bbcode_av_video_ext_explain" version_id="1" version_string="1.0"><![CDATA[Separate each extension using a semi-colon: <b>;</b>]]></phrase>
+    <phrase title="sedo_h5l_bcenter" version_id="5" version_string="1.0.4"><![CDATA[Normal center]]></phrase>
+    <phrase title="sedo_h5l_bleft" version_id="5" version_string="1.0.4"><![CDATA[Normal left]]></phrase>
+    <phrase title="sedo_h5l_blockalign" version_id="5" version_string="1.0.4"><![CDATA[Block Align]]></phrase>
+    <phrase title="sedo_h5l_bright" version_id="5" version_string="1.0.4"><![CDATA[Normal right]]></phrase>
+    <phrase title="sedo_h5l_fleft" version_id="5" version_string="1.0.4"><![CDATA[Float left]]></phrase>
+    <phrase title="sedo_h5l_fright" version_id="5" version_string="1.0.4"><![CDATA[Float right]]></phrase>
+    <phrase title="sedo_h5m_background_desc" version_id="5" version_string="1.0.4"><![CDATA[Image background for video to display before starting it.]]></phrase>
+    <phrase title="sedo_h5m_btn_desc" global_cache="1" version_id="5" version_string="1.0.4"><![CDATA[Inserts a multimedia file]]></phrase>
+    <phrase title="sedo_h5m_caption" version_id="5" version_string="1.0.4"><![CDATA[Type your caption here (optional)]]></phrase>
+    <phrase title="sedo_h5m_caption_align" version_id="5" version_string="1.0.4"><![CDATA[Caption align]]></phrase>
+    <phrase title="sedo_h5m_fallback_desc" version_id="5" version_string="1.0.4"><![CDATA[Some mobile devices will require the file to use a specific format.]]></phrase>
+    <phrase title="sedo_h5m_mce4ui_background" version_id="5" version_string="1.0.4"><![CDATA[Background Image]]></phrase>
+    <phrase title="sedo_h5m_mce4ui_fallback" version_id="5" version_string="1.0.4"><![CDATA[Fallback]]></phrase>
+    <phrase title="sedo_h5m_mce4ui_height" version_id="5" version_string="1.0.4"><![CDATA[Height]]></phrase>
+    <phrase title="sedo_h5m_mce4ui_layout" version_id="5" version_string="1.0.4"><![CDATA[Layout]]></phrase>
+    <phrase title="sedo_h5m_mce4ui_source" version_id="5" version_string="1.0.4"><![CDATA[Source]]></phrase>
+    <phrase title="sedo_h5m_mce4ui_title" version_id="5" version_string="1.0.4"><![CDATA[Multimedia Audio/Video]]></phrase>
+    <phrase title="sedo_h5m_mce4ui_urlorid" version_id="5" version_string="1.0.4"><![CDATA[URL/ID: ]]></phrase>
+    <phrase title="sedo_h5m_mce4ui_width" version_id="5" version_string="1.0.4"><![CDATA[Width]]></phrase>
+    <phrase title="sedo_h5m_nofile" version_id="5" version_string="1.0.4"><![CDATA[No file, use classic URL instead.]]></phrase>
+    <phrase title="sedo_h5m_noimage" version_id="5" version_string="1.0.4"><![CDATA[No image, use classic URL instead.]]></phrase>
+    <phrase title="sedo_h5m_src_desc" version_id="5" version_string="1.0.4"><![CDATA[The audio/video url or file you want to display]]></phrase>
     <phrase title="sedo_html5media_file_not_valid" version_id="1" version_string="1.0"><![CDATA[The file is not valid]]></phrase>
+    <phrase title="sedo_html5media_no_perms" version_id="5" version_string="1.0.4"><![CDATA[You don't have permission to play the file]]></phrase>
   </phrases>
   <route_prefixes/>
   <style_properties/>
   <templates>
-    <template title="sedo_bbcode_multimedia" version_id="1" version_string="1.0"><![CDATA[<xen:require css="sedo_bbcode_multimedia.css" />
+    <template title="quattro_dialog_bbm_multimedia" version_id="5" version_string="1.0.4"><![CDATA[<xen:require css="quattro_dialog.css" />
+<xen:require css="quattro_dialog_bbm_multimedia.css" />
+<xen:require js="js/sedo/html5media/tinyquattro/av.js" />
+
+<div class="mceTitle">{xen:phrase sedo_h5m_mce4ui_title}</div>
+
+<div class="mceTabs">
+	<div id="xentabs_h5l_source">{xen:phrase sedo_h5m_mce4ui_source}</div>
+	<div id="xentabs_h5l_fallback">{xen:phrase sedo_h5m_mce4ui_fallback}</div>
+	<div id="xentabs_h5l_layout">{xen:phrase sedo_h5m_mce4ui_layout}</div>
+	<div id="xentabs_h5l_background">{xen:phrase sedo_h5m_mce4ui_background}</div>
+</div>
+
+<div class="mcePanes" style="width:500px">
+	<div id="xenpane_h5l_source">
+		<dl class="xenmce_inline">
+			<dt id="adv_h5l_src_phrase">{xen:phrase sedo_h5m_mce4ui_urlorid}</dt>
+			<dd><input 	id="adv_h5l_src"
+					name="src"
+					type="text"
+					size="35"
+					class="mce-textbox mceFocus targetId"
+					value="{$selection.text}"
+				/><p class="explain">{xen:phrase sedo_h5m_src_desc}</p>
+			</dd>
+		</dl>
+	</div>
+	<div id="xenpane_h5l_fallback">
+		<dl class="xenmce_inline">
+			<dt id="adv_h5l_fallback_phrase">{xen:phrase sedo_h5m_mce4ui_urlorid}</dt>
+			<dd><input 	id="adv_h5l_fallback"
+					name="fallback"
+					type="text"
+					size="35"
+					class="mce-textbox targetId"
+					value=""
+				/><p class="explain">{xen:phrase sedo_h5m_fallback_desc}</p>
+			</dd>
+		</dl>
+	</div>
+
+	<div id="xenpane_h5l_layout">
+		<dl class="xenmce_inline">
+			<dt>{xen:phrase sedo_h5m_mce4ui_width}</dt>
+			<dd><input 	id="adv_h5l_width"
+					name="width"
+					type="text"
+					style="width:50px"
+					class="mce-textbox"
+					value=""
+				/>
+			</dd>
+			<dt></dt>
+			<dd><input 	id="adv_h5l_width_type"
+					name="widthType"
+					type="text"
+					class="mce-textbox"
+					style="width:20px"
+					readonly="true"
+					value="px" 
+				/>
+			</dd>
+			<dt style="margin-left:20px">{xen:phrase sedo_h5m_mce4ui_height}</dt>
+			<dd><input 	id="adv_h5l_height"
+					name="height"
+					type="text"
+					style="width:50px"
+					class="mce-textbox"
+					value=""
+				/>
+			</dd>
+			<dt></dt>
+			<dd><input 	id="adv_h5l_height_type"
+					name="heightType"
+					type="text"
+					class="mce-textbox"
+					style="width:20px"
+					readonly="true"
+					value="px" 
+				/>
+			</dd>
+		</dl>
+		<dl class="xenmce_inline">
+			<dt>{xen:phrase sedo_h5l_blockalign}</dt>
+			<dd>
+				<select id="adv_latex_align" name="blockAlign" class="mce-textbox">
+					<option value="bleft">{xen:phrase sedo_h5l_bleft}</option>
+					<option value="bcenter">{xen:phrase sedo_h5l_bcenter}</option>
+					<option value="bright">{xen:phrase sedo_h5l_bright}</option>
+					<option value="fleft">{xen:phrase sedo_h5l_fleft}</option>
+					<option value="fright">{xen:phrase sedo_h5l_fright}</option>
+				</select>
+			</dd>
+		</dl>
+		<dl>
+			<dt></dt>
+			<dd class="caption_align"><p>{xen:phrase sedo_h5m_caption_align}</p>
+				<select id="adv_h5l_caption_align" name="captionAlign" class="mce-textbox">
+					<option value="left">{xen:phrase left}</option>
+					<option value="center">{xen:phrase center}</option>
+					<option value="right">{xen:phrase right}</option>
+				</select>
+			</dd>
+
+			<dt>{xen:phrase sedo_h5m_caption}</dt>
+			<dd><textarea	id="adv_h5l_caption_textarea"
+					name="caption"
+					type="text"
+					class="mce-textbox"
+				/>
+			</dd>
+		</dl>
+	</div>
+
+	<div id="xenpane_h5l_background">
+		<dl class="xenmce_inline">
+			<dt id="adv_h5l_fallback_phrase">{xen:phrase sedo_h5m_mce4ui_urlorid}</dt>
+			<dd><input 	id="adv_h5l_fallback"
+					name="background"
+					type="text"
+					size="35"
+					class="mce-textbox targetId"
+					value=""
+				/><p class="explain">{xen:phrase sedo_h5m_background_desc}</p>
+			</dd>
+		</dl>
+	</div>	
+</div>
+
+<div class="quattro_h5l_attach_wrapper">
+ 	<div class="quattro_h5l_attach_file">
+		<xen:if is="{$attachments}">
+			 <xen:foreach loop="$attachments" value="$attachment">
+				<xen:if is="!{$attachment.width} ">
+			 		<span data-attachid="{$attachment.attachment_id}">{$attachment.filename}</span>
+				</xen:if>
+			 </xen:foreach>
+		<xen:else />
+			<p class="no_attach">{xen:phrase sedo_h5m_nofile}</p>
+		</xen:if>
+ 	</div>
+ 	<div class="quattro_h5l_attach_img">
+		<xen:if is="{$imgAttachments}">
+			 <xen:foreach loop="$imgAttachments" value="$attachment">
+				<img 	src="{$attachment.thumbnailUrl}"
+					data-attachid="{$attachment.attachment_id}"
+					alt="{$attachment.attachment_id}" 
+				/>
+			 </xen:foreach>
+		<xen:else />
+			<p class="no_attach">{xen:phrase sedo_h5m_noimage}</p>
+		</xen:if>
+ 	</div>
+</div>]]></template>
+    <template title="quattro_dialog_bbm_multimedia.css" version_id="6" version_string="1.1.0"><![CDATA[.mce-xen-body #adv_h5l_caption_textarea{
+	width:350px;
+	height:40px;
+}
+
+.mce-xen-body .caption_align{
+	float:right;
+}
+.mce-xen-body .caption_align p{
+	padding:2px;
+}
+
+.mce-xen-body dd .explain{
+	font-size:10px;
+}
+
+.mce-xen-body .quattro_h5l_attach_img{
+	display:none;
+}
+
+.mce-xen-body .quattro_h5l_attach_wrapper{
+	margin:5px;
+}
+
+.mce-xen-body .quattro_h5l_attach_wrapper .no_attach{
+	padding: 5px;
+}
+
+.mce-xen-body .quattro_h5l_attach_file{
+	height: 115px;
+	overflow:auto;
+	border: 1px dotted black;
+}
+
+.mce-xen-body .quattro_h5l_attach_file > span {
+	float: left;
+	border: 1pt solid grey;
+	margin: 2px;
+	padding: 5px;
+	cursor: pointer;
+}
+
+.mce-xen-body .quattro_h5l_attach_file > span:hover {
+	border-color: red;
+}
+
+.mce-xen-body .quattro_h5l_attach_file > span.selected {
+	background-color: {xen:property primaryDark};
+	color: {xen:property primaryLightest};
+}
+
+.mce-xen-body .quattro_h5l_attach_img{
+	height: 115px;
+	overflow:auto;
+	border: 1px dotted black;
+}
+
+.mce-xen-body .quattro_h5l_attach_img > img {
+	float: left;
+	border: 1pt solid grey;
+	margin: 2px;
+	padding: 5px;
+	cursor: pointer;
+}
+
+.mce-xen-body .quattro_h5l_attach_img > img:hover {
+	border-color: red;
+}]]></template>
+    <template title="sedo_bbcode_multimedia" version_id="6" version_string="1.1.0"><![CDATA[<xen:require css="sedo_bbcode_multimedia.css" />
 <xen:require js="js/sedo/html5media/html5media.min.js" />
 
-<div class="sedo_bb_media {xen:if '{$options.css}', '{$options.css}'}" style="width:{$options.width}px">
+<div 	class="sedo_bb_media {$options.css}" 
+	{xen:if '!{$options.responsiveMode}', 'style="width:{$options.width}px"'}>
 <xen:if is="{$options.isValid}">
 	<xen:if is="{$options.mediaType} == 'audio'">
-		<xen:if is="{$options.hasFallback}">
+		<xen:if is="{$options.fallback}">
 			<audio controls preload> 
 				<source src="{xen:raw $content}"></source> 
-				<source src="{xen:raw $options.hasFallback}"></source> 
+				<source src="{xen:raw $options.fallback}"></source> 
 			</audio>
 		<xen:else />
 			<audio src="{xen:raw $content}" controls preload></audio>
 		</xen:if>
 	<xen:else />
-		<xen:if is="{$options.hasFallback}">
-				<video width="{$options.width}" height="{$options.height}" {xen:if '{$options.hasPoster}', 'poster="{$options.hasPoster}"'} controls preload> 
-					<source src="{xen:raw $content}"></source> 
-					<source src="{xen:raw $options.hasFallback}"></source> 
+		<xen:if is="{$options.fallback}">
+				<video 	class="{xen:if '{$options.displayNoViewPerms}', 'noperms'}" 
+					{xen:if '!{$options.responsiveMode}', 'width="{$options.width}" height="{$options.height}"'} 
+					{xen:if '{$options.poster}', 'poster="{$options.poster}"'} 
+					controls preload> 
+						<source src="{xen:raw $content}"></source> 
+						<source src="{xen:raw $options.fallback}"></source> 
 				</video>
 		<xen:else />
-			<video src="{xen:raw $content}" width="{$options.width}" height="{$options.height}" {xen:if '{$options.hasPoster}', 'poster="{$options.hasPoster}"'} controls preload></video>
+			<video src="{xen:raw $content}" width="{$options.width}" height="{$options.height}" {xen:if '{$options.poster}', 'poster="{$options.poster}"'} controls preload></video>
 		</xen:if>
 	</xen:if>
-	<xen:if is="{$options.hasCaption}">
-		<p class="caption {$options.cssCaption}">{$options.hasCaption}</p>
+	<xen:if is="{$options.caption} OR {$options.displayNoViewPerms}">
+		<p class="caption {$options.cssCaption}">{xen:if '{$options.displayNoViewPerms}', '{xen:phrase sedo_html5media_no_perms}', '{$options.caption}'}</p>
 	</xen:if>
 <xen:else />
 	<p class="invalid">{xen:phrase sedo_html5media_file_not_valid}</p>
 </xen:if>
 </div>]]></template>
-    <template title="sedo_bbcode_multimedia.css" version_id="1" version_string="1.0"><![CDATA[.sedo_bb_media{
+    <template title="sedo_bbcode_multimedia.css" version_id="6" version_string="1.1.0"><![CDATA[.sedo_bb_media{
 	display:block;
 	position: relative;
 }
@@ -136,6 +387,17 @@ P.S: the audio extensions have the priority on video extensions. If you want to 
 	margin:1px 0 0 10px;
 }
 
+.sedo_bb_media.responsive{
+	max-width:80%;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.sedo_bb_media.responsive video{
+	max-width: 100%;
+	height: auto;
+}
+
 .sedo_bb_media .caption{
 	font-style:italic;
 }
@@ -152,8 +414,13 @@ P.S: the audio extensions have the priority on video extensions. If you want to 
 .sedo_bb_media .invalid{
 	font-style:italic;
 	color:orange;
+}
+
+.sedo_bb_media video.noperms{
+	border:1px solid {xen:property primaryLighter};
+	background-color: {xen:property primaryLighterStill};
 }]]></template>
   </templates>
+  <public_template_modifications/>
   <bb_code_media_sites/>
-  <template_modifications/>
 </addon>

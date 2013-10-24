@@ -22,13 +22,14 @@ class Sedo_Html5media_BbCode_Formatter_BBcodes
 		$width = '';
 		$height = '';
 		$css = '';
-		$css_caption = '';	
+		$css_caption = 'left';	
 		$type = '';
 		$extension = '';
 		$hasFallback = false;
 		$hasPoster = false;
 		$hasCaption = false;
 		$posterType = false;
+		$displayNoViewPerms = false;
 		
 		/*Options broswing*/
 		$i = 0;
@@ -115,11 +116,11 @@ class Sedo_Html5media_BbCode_Formatter_BBcodes
 
 		/*Media fallback detection*/
 		$media_fallback = false;
-		
+
 		if($hasFallback)
 		{
 			$wip = explode('|', $content);
-			
+
 			$media_fallback = false;
 			
 			if(isset($wip[1]))
@@ -169,6 +170,11 @@ class Sedo_Html5media_BbCode_Formatter_BBcodes
 				$content = self::_miniUrlEncode($attachmentParams['url']);
 				$extension = $attachmentParams['attachment']['extension'];
 			}
+
+			if(!$attachmentParams['canView'])
+			{
+				$displayNoViewPerms = true;
+			}
 		}
 
 		if(empty($type) && in_array($extension, $audio_extensions))
@@ -206,18 +212,26 @@ class Sedo_Html5media_BbCode_Formatter_BBcodes
 		{
 			$hasPoster = false;
 		}
-		
+
+		$useResponsiveMode = self::useResponsiveMode();
+
+		if($useResponsiveMode)
+		{
+			$css = 'responsive';
+		}
 		
 		/*Final options*/
 		$options['isValid'] = (in_array($extension, $all_extensions)) ? true : false;
 		$options['mediaType'] = $type;
-		$options['hasFallback'] = $media_fallback;
-		$options['hasPoster'] = $hasPoster;	
+		$options['fallback'] = $media_fallback;
+		$options['poster'] = $hasPoster;	
 		$options['width'] = $width;
 		$options['height'] = $height;
 		$options['css'] = $css;
-		$options['hasCaption'] = $hasCaption;
+		$options['caption'] = $hasCaption;
 		$options['cssCaption'] = 'cap_'.$css_caption;
+		$options['displayNoViewPerms'] = $displayNoViewPerms;
+		$options['responsiveMode'] = $useResponsiveMode;
 	}
 	
 	protected static function _miniUrlEncode($url)
@@ -232,6 +246,36 @@ class Sedo_Html5media_BbCode_Formatter_BBcodes
 		);
 		
 		return str_replace($search, $replace, $url);
+	}
+
+	public static function useResponsiveMode()
+	{
+		$isResponsive = XenForo_Template_Helper_Core::styleProperty('enableResponsive');
+		
+		if(!$isResponsive)
+		{
+			return false;
+		}
+		
+		return self::isMobile();
+	}
+	
+	public static function isMobile($option = false)
+	{
+		if((!class_exists('Sedo_DetectBrowser_Listener_Visitor') || !isset($visitor->getBrowser['isMobile'])))
+		{
+			return XenForo_Visitor::isBrowsingWith('mobile');
+		}
+		else
+		{
+			//External addon
+			if($option == 'onlyTablet')
+			{
+				return $visitor->getBrowser['isTablet'];
+			}
+
+			return $visitor->getBrowser['isMobile'];
+		}
 	}
 }
 //Zend_Debug::dump($contents);
