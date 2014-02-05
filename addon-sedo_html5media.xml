@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="sedo_html5media" title="[BBM] BbCode Multimedia - Html5media" version_string="1.1.0" version_id="6" url="http://xenforo.com/community/resources/bbcode-multimedia-html5media.1603" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
+<addon addon_id="sedo_html5media" title="[BBM] BbCode Multimedia - Html5media" version_string="1.2.0" version_id="7" url="http://xenforo.com/community/resources/bbcode-multimedia-html5media.1603" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
   <admin_templates/>
   <admin_template_modifications/>
   <code_events/>
-  <code_event_listeners/>
+  <code_event_listeners>
+    <listener event_id="tinyquattro_setup" execute_order="12" callback_class="Sedo_Html5media_Listeners_AllInOne" callback_method="mceConfig" active="1" hint="" description="Add Av Menu"/>
+  </code_event_listeners>
   <cron/>
   <email_templates/>
   <email_template_modifications/>
   <optiongroups>
-    <group group_id="sedo_bbcode_html5media" display_order="9999" debug_only="0"/>
+    <group group_id="sedo_bbcode_html5media" display_order="13215" debug_only="0"/>
     <option option_id="sedo_bbcode_av_audio_ext" edit_format="textbox" data_type="string" can_backup="1">
       <default_value>mp3;ogg</default_value>
       <edit_format_params></edit_format_params>
@@ -52,6 +54,20 @@ step=25</edit_format_params>
       <sub_options></sub_options>
       <relation group_id="sedo_bbcode_html5media" display_order="110"/>
     </option>
+    <option option_id="sedo_bbcode_av_video_preload" edit_format="select" data_type="string" can_backup="1">
+      <default_value>metadata</default_value>
+      <edit_format_params>none={xen:phrase sedo_bbcode_av_preload_none}
+metadata={xen:phrase sedo_bbcode_av_preload_metada}
+auto={xen:phrase sedo_bbcode_av_preload_auto}</edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="sedo_bbcode_html5media" display_order="130"/>
+    </option>
+    <option option_id="sedo_bbcode_av_video_preloadbb" edit_format="onoff" data_type="boolean" can_backup="1">
+      <default_value>0</default_value>
+      <edit_format_params></edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="sedo_bbcode_html5media" display_order="131"/>
+    </option>
   </optiongroups>
   <permissions>
     <permission_groups/>
@@ -59,7 +75,7 @@ step=25</edit_format_params>
     <interface_groups/>
   </permissions>
   <phrases>
-    <phrase title="option_group_sedo_bbcode_html5media" version_id="1" version_string="1.0"><![CDATA[BbCode Multimedia]]></phrase>
+    <phrase title="option_group_sedo_bbcode_html5media" version_id="6" version_string="1.1.0"><![CDATA[[BBM] Multimedia Bb Code]]></phrase>
     <phrase title="option_group_sedo_bbcode_html5media_description" version_id="1" version_string="1.0"><![CDATA[Options for BbCode for audio & video]]></phrase>
     <phrase title="option_sedo_bbcode_av_audio_ext" version_id="1" version_string="1.0"><![CDATA[Audio extensions]]></phrase>
     <phrase title="option_sedo_bbcode_av_audio_ext_explain" version_id="1" version_string="1.0"><![CDATA[Separate each extension using a semi-colon: <b>;</b><br />
@@ -75,6 +91,13 @@ P.S: the audio extensions have the priority on video extensions. If you want to 
     <phrase title="option_sedo_bbcode_av_max_width_explain" version_id="1" version_string="1.0"><![CDATA[]]></phrase>
     <phrase title="option_sedo_bbcode_av_video_ext" version_id="1" version_string="1.0"><![CDATA[Video extensions]]></phrase>
     <phrase title="option_sedo_bbcode_av_video_ext_explain" version_id="1" version_string="1.0"><![CDATA[Separate each extension using a semi-colon: <b>;</b>]]></phrase>
+    <phrase title="option_sedo_bbcode_av_video_preload" version_id="6" version_string="1.1.0"><![CDATA[Preload configuration]]></phrase>
+    <phrase title="option_sedo_bbcode_av_video_preloadbb" version_id="6" version_string="1.1.0"><![CDATA[Allow preload config to be changed from Bb Code options?]]></phrase>
+    <phrase title="option_sedo_bbcode_av_video_preloadbb_explain" version_id="6" version_string="1.1.0"><![CDATA[If you set yes, you will be able to use the Bb Code options to setup the video preload configuration. The Bb Codes options for preload will be: nocache, metadata, cache.]]></phrase>
+    <phrase title="option_sedo_bbcode_av_video_preload_explain" version_id="6" version_string="1.1.0"><![CDATA[This setting will allow you to configure if the audio or video can be cached by the browser. If you select to cache the video, then it will start to be downloaded as soon as the page is loaded.]]></phrase>
+    <phrase title="sedo_bbcode_av_preload_auto" version_id="6" version_string="1.1.0"><![CDATA[Auto: cache the video]]></phrase>
+    <phrase title="sedo_bbcode_av_preload_metada" version_id="6" version_string="1.1.0"><![CDATA[Metadata: only cache the metadata (i.e: length)]]></phrase>
+    <phrase title="sedo_bbcode_av_preload_none" version_id="6" version_string="1.1.0"><![CDATA[None: do not cache the video]]></phrase>
     <phrase title="sedo_h5l_bcenter" version_id="5" version_string="1.0.4"><![CDATA[Normal center]]></phrase>
     <phrase title="sedo_h5l_bleft" version_id="5" version_string="1.0.4"><![CDATA[Normal left]]></phrase>
     <phrase title="sedo_h5l_blockalign" version_id="5" version_string="1.0.4"><![CDATA[Block Align]]></phrase>
@@ -333,24 +356,30 @@ P.S: the audio extensions have the priority on video extensions. If you want to 
 <xen:if is="{$options.isValid}">
 	<xen:if is="{$options.mediaType} == 'audio'">
 		<xen:if is="{$options.fallback}">
-			<audio controls preload> 
+			<audio controls preload="{$options.preload}"> 
 				<source src="{xen:raw $content}"></source> 
 				<source src="{xen:raw $options.fallback}"></source> 
 			</audio>
 		<xen:else />
-			<audio src="{xen:raw $content}" controls preload></audio>
+			<audio src="{xen:raw $content}" controls preload="{$options.preload}"></audio>
 		</xen:if>
 	<xen:else />
 		<xen:if is="{$options.fallback}">
 				<video 	class="{xen:if '{$options.displayNoViewPerms}', 'noperms'}" 
 					{xen:if '!{$options.responsiveMode}', 'width="{$options.width}" height="{$options.height}"'} 
 					{xen:if '{$options.poster}', 'poster="{$options.poster}"'} 
-					controls preload> 
+					controls
+					preload="{$options.preload}">
 						<source src="{xen:raw $content}"></source> 
 						<source src="{xen:raw $options.fallback}"></source> 
 				</video>
 		<xen:else />
-			<video src="{xen:raw $content}" width="{$options.width}" height="{$options.height}" {xen:if '{$options.poster}', 'poster="{$options.poster}"'} controls preload></video>
+			<video src="{xen:raw $content}"
+				width="{$options.width}"
+				height="{$options.height}"
+				{xen:if '{$options.poster}', 'poster="{$options.poster}"'}
+				controls
+				preload="{$options.preload}"></video>
 		</xen:if>
 	</xen:if>
 	<xen:if is="{$options.caption} OR {$options.displayNoViewPerms}">
@@ -423,4 +452,5 @@ P.S: the audio extensions have the priority on video extensions. If you want to 
   </templates>
   <public_template_modifications/>
   <bb_code_media_sites/>
+  <bb_codes/>
 </addon>

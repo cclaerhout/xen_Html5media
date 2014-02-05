@@ -12,6 +12,8 @@
 [av=320x240|http://media.html5media.info/poster.jpg|bcenter|This is a video|right]http://media.html5media.info/video.ogv[/av]]]></example>
       <active>1</active>
       <display_help>1</display_help>
+      <bbcode_id>sedo_adv_av</bbcode_id>
+      <bbcode_addon></bbcode_addon>
     </General>
     <Methods>
       <Replacement>
