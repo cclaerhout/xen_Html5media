@@ -13,7 +13,7 @@
       <active>1</active>
       <display_help>1</display_help>
       <bbcode_id>sedo_adv_av</bbcode_id>
-      <bbcode_addon></bbcode_addon>
+      <bbcode_addon>sedo_html5media</bbcode_addon>
     </General>
     <Methods>
       <Replacement>
